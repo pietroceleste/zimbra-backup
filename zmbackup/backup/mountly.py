@@ -3,7 +3,7 @@ import zimbra.filesystem
 import zimbra.constant
 import calendar
 
-class base(baseBackup):    
+class mountly(baseBackup):    
     
     def __init__(self, config) -> None:
         self.config = config

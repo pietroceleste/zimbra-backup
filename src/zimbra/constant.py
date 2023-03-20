@@ -1,1 +1,0 @@
-ROOTDIRKEY = 'backupRootDir'

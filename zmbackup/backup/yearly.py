@@ -1,6 +1,6 @@
-from zimbra.backup.montly.base import base as montlybase
+from zimbra.backup.montly import montly
 
-class base(montlybase):
+class yearly(montly):
 
     def _getDateStartEnd(self, day):        
         dateStart = day.replace(day=1, month=1)        

@@ -1,6 +1,6 @@
-from zimbra.backup.daily import dailyBackup
-from zimbra.restore.restore import restore
-import zimbra.filesystem
+from zmbackup.backup.daily import dailyBackup
+from zmbackup.restore.restore import restore
+import zmbackup.filesystem
 from datetime import datetime,date, timedelta
 
 class align:    

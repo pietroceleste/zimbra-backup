@@ -1,6 +1,6 @@
-from zimbra.backup.montly import montly
 
-class yearly(montly):
+
+class yearly(zmbackup.backup.montly):
 
     def _getDateStartEnd(self, day):        
         dateStart = day.replace(day=1, month=1)        

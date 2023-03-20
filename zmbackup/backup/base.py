@@ -1,7 +1,7 @@
 import requests, os, json
 import datetime
-import zimbra.filesystem
-import zimbra.constant
+import zmbackup.filesystem
+import zmbackup.constant
 
 class base:
     config = None
@@ -29,13 +29,13 @@ class base:
 
     def saveBackupFile(self, subDirectory, fileName, fileContent):
         filePath = os.path.join(self.getOriginHost(), subDirectory, "%s.tgz" % (fileName))
-        zimbra.filesystem().saveFile(filePath, fileContent)
+        zmbackup.zmbackup.filesystem().saveFile(filePath, fileContent)
 
     def backupFilenameFactory(self, subDirectory, fileName):
         return os.path.join(self.getOriginHost(), subDirectory, "%s.tgz" % (fileName))
     
     def getOriginHost(self):
-        return self.config[zimbra.constant.BACKUP_ROOTDIR_KEY]
+        return self.config[zmbackup.zmbackup.constant.BACKUP_ROOTDIR_KEY]
     
     def getOriginAdminAccount(self):
-        return tuple(self.config['origin'][zimbra.constant.ADMIN_ACCOUNT_KEY])
+        return tuple(self.config['origin'][zmbackup.zmbackup.constant.ADMIN_ACCOUNT_KEY])

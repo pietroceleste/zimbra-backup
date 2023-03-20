@@ -1,6 +1,6 @@
-from zmbackup.src.zimbra.align.align import align
-import zimbra.filesystem
-import zimbra.constant as const
+from zmbackup.align.align import align
+import zmbackup.filesystem
+import zmbackup.constant as const
 
 class realign(align):    
     
@@ -8,7 +8,7 @@ class realign(align):
         super().__init__(config)        
 
     def exec(self, mailboxes):        
-        subDirToAlign = zimbra.filesystem().getZeroSizeSubDirectory(self.config[const.BACKUP_ROOTDIR_KEY]) 
+        subDirToAlign = zmbackup.zmbackup.filesystem().getZeroSizeSubDirectory(self.config[const.BACKUP_ROOTDIR_KEY]) 
         self._validateInput(mailboxes, subDirToAlign)
         self._execBackup(mailboxes, subDirToAlign)
     

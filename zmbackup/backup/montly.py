@@ -1,9 +1,9 @@
-from zimbra.backup.base import base as baseBackup
-import zimbra.filesystem
-import zimbra.constant
+from zmbackup.backup.base import base as baseBackup
+import zmbackup.filesystem
+import zmbackup.zmbackup.constant
 import calendar
 
-class mountly(baseBackup):    
+class montly(baseBackup):    
     
     def __init__(self, config) -> None:
         self.config = config
@@ -21,12 +21,12 @@ class mountly(baseBackup):
     def _execBackup(self, mailboxes, day):
         period = self._getDateStartEnd(day)
         subDir = self._subDirNameFactory(day)
-        hostOrigin = self.config['origin']['host']
-        adminAccount = self.config['origin']['admin-account']
+        hostOrigin = self.getOriginHost()
+        adminAccount = self.getOriginAdminAccount()
         for mailboxId in mailboxes:                
             url = super()._zimbraApiPeriodUrlFactory(hostOrigin, mailboxId, period)
             localFilename = self.backupFilenameFactory(subDir, mailboxId)
-            zimbra.filesystem().downloadAndSaveBackupFile(url, localFilename, adminAccount)
+            zmbackup.zmbackup.filesystem().downloadAndSaveBackupFile(url, localFilename, adminAccount)
     
     def _getDateStartEnd(self, day):
         daysOfMonth = calendar.monthrange(day.year, day.month)[1]

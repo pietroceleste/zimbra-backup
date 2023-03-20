@@ -1,8 +1,8 @@
-from zimbra.backup.base import base as baseBackup
-import zimbra.filesystem
-import zimbra.constant
+from zmbackup.backup.base import base
+import zmbackup.filesystem
+import zmbackup.constant
 
-class daily(baseBackup):    
+class daily(base):
     
     def __init__(self, config) -> None:
         self.config = config
@@ -25,7 +25,7 @@ class daily(baseBackup):
         for mailboxId in mailboxes:                            
             url = super()._zimbraApiPeriodUrlFactory(hostOrigin, mailboxId, strDate)
             localFilename = self.backupFilenameFactory(subDir, mailboxId)
-            zimbra.filesystem().downloadAndSaveBackupFile(url, localFilename, adminAccount)    
+            zmbackup.zmbackup.filesystem().downloadAndSaveBackupFile(url, localFilename, adminAccount)    
 
     def _subDirNameFactory(self, day):
         return "%s-%02d-%02d" % (day.year, day.month, day.day)

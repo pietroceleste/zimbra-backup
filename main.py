@@ -17,9 +17,13 @@ class main:
         self.mailboxes = zfs.getJsonFile(self.rootdir + '/conf/mailboxes.json')        
         self.command = self.grabCommand()
 
+    def restoreTodayFactory(self):
+        rst = zmbackup.restore(self.config)
+        rst.exec('2023-03-21')
+
     def alignDailyDirectoriesAction(self):        
         zbk = zmbackup.DailyAlign(self.config);
-        zbk.exec(self.mailboxes, datetime.strptime('2023-01-01', '%Y-%m-%d'))
+        zbk.exec(self.mailboxes, datetime.strptime('2023-03-01', '%Y-%m-%d'))
     
     def dailyBackupAction(self):        
         zbk = zmbackup.Daily(self.config)
@@ -37,4 +41,4 @@ class main:
         return 'syncdays'
     
 if (__name__ == "__main__"):
-    main().alignDailyDirectoriesAction()
+    main().restoreTodayFactory()

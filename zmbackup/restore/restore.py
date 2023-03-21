@@ -18,18 +18,24 @@ class restore:
     def upload(self, fileName):
         mailboxId = self._extractMailboxIdFromFilename(fileName)
         url = self._urlFactory(mailboxId)
-        self._execUpload(url, fileName)
+        rsp = self._execUpload(url, fileName)
+        print(rsp)
     
     def _extractMailboxIdFromFilename(self, filePath):
         fileName = os.path.basename(filePath)
         return fileName.replace('.tgz','')
 
     def _urlFactory(self, mailboxId):
-        return "https://%s:7071/home/%s/?fmt=tgz&resolve=skip}" % (self.getDestinationHost(), mailboxId)
+        return "https://%s:7071/home/%s/?fmt=tgz&resolve=skip" % (self.getDestinationHost(), mailboxId)
     
     def _execUpload(self, url, fileName):
         headers = {'Content-Type': 'application/x-www-form-urlencoded',}        
-        requests.post(url, headers=headers, data=fileName, verify=False, auth=tuple(self.config['destination']['admin-account']))
+        requests.packages.urllib3.disable_warnings()
+        fileContent = open(fileName, 'rb')        
+        return requests.post(url, headers=headers, data=fileContent.read(), verify=False, auth=self.getDestinationAdmin())
 
     def getDestinationHost(self):
         return self.config['destination']['host']
+    
+    def getDestinationAdmin(self):
+        return tuple(self.config['destination']['admin-account'])

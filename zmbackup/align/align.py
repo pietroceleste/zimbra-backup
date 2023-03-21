@@ -23,8 +23,7 @@ class align:
 
     def _execBackup(self, mailboxes, fromDate):
         cur_date = fromDate
-        end_date = datetime.today()
-        print(type(cur_date), type(end_date))
+        end_date = datetime.today()        
         delta = timedelta(days=1)
         dates = []
         while cur_date <= end_date:                                    

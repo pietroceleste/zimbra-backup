@@ -23,7 +23,7 @@ class main:
 
     def alignDailyDirectoriesAction(self):        
         zbk = zmbackup.DailyAlign(self.config);
-        zbk.exec(self.mailboxes, datetime.strptime('2023-03-01', '%Y-%m-%d'))
+        zbk.exec(self.mailboxes, datetime.strptime('2023-01-01', '%Y-%m-%d'))
     
     def dailyBackupAction(self):        
         zbk = zmbackup.Daily(self.config)
@@ -41,4 +41,4 @@ class main:
         return 'syncdays'
     
 if (__name__ == "__main__"):
-    main().restoreTodayFactory()
+    main().alignDailyDirectoriesAction()

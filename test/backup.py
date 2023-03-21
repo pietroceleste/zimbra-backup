@@ -1,7 +1,7 @@
 import unittest
 import os
-from src.zimbra.filesystem import filesystem as zfs
-from src.zimbra.backup.daily import daily
+from zmbackup.filesystem import filesystem as zfs
+from zmbackup.backup.daily import daily
 
 class TestBackup(unittest.TestCase):
     config = None

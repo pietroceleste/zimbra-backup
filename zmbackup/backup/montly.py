@@ -1,6 +1,5 @@
 from zmbackup.backup.base import base as baseBackup
-import zmbackup.filesystem
-import zmbackup.zmbackup.constant
+from zmbackup.backup.download import download as backupDownload
 import calendar
 
 class montly(baseBackup):    
@@ -26,7 +25,8 @@ class montly(baseBackup):
         for mailboxId in mailboxes:                
             url = super()._zimbraApiPeriodUrlFactory(hostOrigin, mailboxId, period)
             localFilename = self.backupFilenameFactory(subDir, mailboxId)
-            zmbackup.zmbackup.filesystem().downloadAndSaveBackupFile(url, localFilename, adminAccount)
+            print(localFilename)
+            backupDownload().exec(url, adminAccount, localFilename)            
     
     def _getDateStartEnd(self, day):
         daysOfMonth = calendar.monthrange(day.year, day.month)[1]

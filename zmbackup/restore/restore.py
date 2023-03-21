@@ -21,4 +21,4 @@ class restore:
     
     def _execUpload(self, url, fileName):
         headers = {'Content-Type': 'application/x-www-form-urlencoded',}        
-        response = requests.post(url, headers=headers, data=fileName, verify=False, auth=tuple(self.config['destination']['admin-account']))
+        requests.post(url, headers=headers, data=fileName, verify=False, auth=tuple(self.config['destination']['admin-account']))

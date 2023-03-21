@@ -29,13 +29,16 @@ class base:
 
     def saveBackupFile(self, subDirectory, fileName, fileContent):
         filePath = os.path.join(self.getOriginHost(), subDirectory, "%s.tgz" % (fileName))
-        zmbackup.zmbackup.filesystem().saveFile(filePath, fileContent)
+        zmbackup.filesystem().saveFile(filePath, fileContent)
 
     def backupFilenameFactory(self, subDirectory, fileName):
-        return os.path.join(self.getOriginHost(), subDirectory, "%s.tgz" % (fileName))
+        return os.path.join(self.getBackupRootDirectory(), subDirectory, "%s.tgz" % (fileName))
     
     def getOriginHost(self):
-        return self.config[zmbackup.zmbackup.constant.BACKUP_ROOTDIR_KEY]
+        return self.config[zmbackup.constant.ORIGIN]['host']
     
     def getOriginAdminAccount(self):
-        return tuple(self.config['origin'][zmbackup.zmbackup.constant.ADMIN_ACCOUNT_KEY])
+        return tuple(self.config['origin'][zmbackup.constant.ADMIN_ACCOUNT_KEY])
+    
+    def getBackupRootDirectory(self):
+        return self.config[zmbackup.constant.BACKUP_ROOTDIR_KEY]

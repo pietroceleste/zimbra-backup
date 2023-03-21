@@ -1,4 +1,4 @@
-from zmbackup.backup.daily import dailyBackup
+from zmbackup.backup.daily import daily as dailyBackup
 from zmbackup.restore.restore import restore
 import zmbackup.filesystem
 from datetime import datetime,date, timedelta

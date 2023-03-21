@@ -13,8 +13,8 @@ class main:
     def __init__(self):
         self.rootdir = os.path.dirname(__file__)
         zfs = zmbackup.filesystem()
-        self.config = zfs.getJsonFile(self.rootdir + '/config.json')
-        self.mailboxes = zfs.getJsonFile(self.rootdir + '/mailboxes.json')        
+        self.config = zfs.getJsonFile(self.rootdir + '/conf/config.json')
+        self.mailboxes = zfs.getJsonFile(self.rootdir + '/conf/mailboxes.json')        
         self.command = self.grabCommand()
 
     def alignDailyDirectoriesAction(self):        
@@ -35,4 +35,4 @@ class main:
         return 'syncdays'
     
 if (__name__ == "__main__"):
-    main().yearlyBackupAction()
+    main().montlyBackupAction()

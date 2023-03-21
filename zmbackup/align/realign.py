@@ -7,7 +7,7 @@ class realign(align):
     def __init__(self, config) -> None:
         super().__init__(config)        
 
-    def exec(self, mailboxes):        
+    def exec(self, mailboxes, date):        
         subDirToAlign = zmbackup.zmbackup.filesystem().getZeroSizeSubDirectory(self.config[const.BACKUP_ROOTDIR_KEY]) 
         self._validateInput(mailboxes, subDirToAlign)
         self._execBackup(mailboxes, subDirToAlign)

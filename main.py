@@ -3,7 +3,7 @@
 import getopt
 import os
 import zmbackup
-import datetime
+from datetime import datetime
 
 class main:
     config = None
@@ -18,21 +18,23 @@ class main:
         self.command = self.grabCommand()
 
     def alignDailyDirectoriesAction(self):        
-        zbk = zmbackup.DailyReAlign(self.config);
-        zbk.exec(self.mailboxes)
+        zbk = zmbackup.DailyAlign(self.config);
+        zbk.exec(self.mailboxes, datetime.strptime('2023-01-01', '%Y-%m-%d'))
     
-    def montlyBackupAction(self):
-        date = datetime.datetime.strptime('2023-02-01', '%Y-%m-%d')        
+    def dailyBackupAction(self):        
+        zbk = zmbackup.Daily(self.config)
+        zbk.exec(self.mailboxes, datetime.today())
+
+    def montlyBackupAction(self):        
         zbk = zmbackup.Montly(self.config)
-        zbk.exec(self.mailboxes, date)
+        zbk.exec(self.mailboxes, datetime.strptime('2023-03-01', '%Y-%m-%d'))
     
-    def yearlyBackupAction(self):
-        date = datetime.datetime.strptime('2022-12-31', '%Y-%m-%d')        
+    def yearlyBackupAction(self):        
         zbk = zmbackup.Yearly(self.config)
-        zbk.exec(self.mailboxes, date)
+        zbk.exec(self.mailboxes, datetime.strptime('2022-12-31', '%Y-%m-%d'))
 
     def grabCommand(self):
         return 'syncdays'
     
 if (__name__ == "__main__"):
-    main().montlyBackupAction()
+    main().alignDailyDirectoriesAction()

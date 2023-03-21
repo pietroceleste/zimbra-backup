@@ -2,13 +2,39 @@ import requests, os, json
 import datetime
 import zmbackup.filesystem
 import zmbackup.constant
+from zmbackup.backup.download import download as backupDownload
 
 class base:
     config = None
     mailboxes = None
 
     def __init__(self, config) -> None:
-        self.config = config            
+        self.config = config        
+    
+    def exec(self, mailboxes, day):
+        print('Start ' +self._getTitle(day))
+        self._validateInput(mailboxes, day)
+        self._execBackup(mailboxes, day)
+        print('End ' +self._getTitle(day))
+    
+    def _getTitle(self, day):
+        return 'backup base'
+
+    def _validateInput(self, mailboxesToBackup, day):
+        if not mailboxesToBackup:
+            raise Exception('Non ci sono caselle di posta da allineare')
+        if not day:
+            raise Exception('Non hai passato un giorno valido da backuppare')
+    
+    def _execBackup(self, mailboxes, day):
+        period = self._getDateStartEndPeriod(day)
+        subDir = self._subDirNameFactory(day)
+        hostOrigin = self.getOriginHost()
+        adminAccount = self.getOriginAdminAccount()
+        for mailboxId in mailboxes:            
+            url = self._zimbraApiPeriodUrlFactory(hostOrigin, mailboxId, period)
+            localFilename = self.backupFilenameFactory(subDir, mailboxId)
+            backupDownload().exec(url, adminAccount, localFilename)
 
     def _getBakupFromOrigin(self, user, rawdate):
         date = datetime.datetime.strptime(rawdate, '%Y-%m-%d').strftime('%m/%d/%y')

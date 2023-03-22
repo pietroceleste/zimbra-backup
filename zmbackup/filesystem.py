@@ -18,7 +18,9 @@ class filesystem:
             result += total_size        
         return result
 
-    def getJsonFile(self, filePath):    
+    def getJsonFile(self, filePath):
+        if (not os.path.exists(filePath)):
+            raise Exception("Il file %s non esiste" % filePath)
         with open(filePath, "r") as json_file:            
             return json.load(json_file)
 

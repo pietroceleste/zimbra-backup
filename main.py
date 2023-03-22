@@ -12,14 +12,17 @@ class main:
     zfs = None 
     argv_manager = None
 
-    def __init__(self):        
+    def __init__(self):
         self.__init_root_dir__()
         self.__init_zimbra_fs__()
-        self.__init_argv_manager__()
-        self.__init_configuration__()                       
-        self.__init_mailboxes_list__()        
-        if (not self.argv_manager.execute()):
-            self.alignDailyDirectoriesAction(datetime.today())
+        try:
+            self.__init_argv_manager__()
+            self.__init_configuration__()                       
+            self.__init_mailboxes_list__()        
+            if (not self.argv_manager.execute()):
+                self.alignDailyDirectoriesAction(datetime.today())
+        except Exception as ex:
+            print(ex)
 
     def __init_root_dir__(self):
         self.rootdir = os.path.dirname(__file__)
@@ -63,19 +66,19 @@ class main:
 
     def alignDailyDirectoriesAction(self, date):        
         zbk = zmbackup.DailyAlign(self.config);
-        zbk.exec(self.mailboxes, datetime.strptime(date, '%Y-%m-%d'))
+        zbk.exec(self.mailboxes, date)
     
     def dailyBackupAction(self, date):
         zbk = zmbackup.Daily(self.config)
-        zbk.exec(self.mailboxes, datetime.strptime(date, '%Y-%m-%d'))
+        zbk.exec(self.mailboxes, date)
 
     def montlyBackupAction(self, date):        
         zbk = zmbackup.Montly(self.config)
-        zbk.exec(self.mailboxes, datetime.strptime(date, '%Y-%m-%d'))
+        zbk.exec(self.mailboxes, date)
     
     def yearlyBackupAction(self, date):
         zbk = zmbackup.Yearly(self.config)
-        zbk.exec(self.mailboxes, datetime.strptime(date, '%Y-%m-%d'))
+        zbk.exec(self.mailboxes, date)
     
 if (__name__ == "__main__"):
     main() #.alignDailyDirectoriesAction()

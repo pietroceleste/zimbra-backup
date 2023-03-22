@@ -11,11 +11,12 @@ class base:
     def __init__(self, config) -> None:
         self.config = config        
     
-    def exec(self, mailboxes, day):
+    def exec(self, mailboxes, rawDay):
+        self._validateInput(mailboxes, rawDay)
+        day = rawDay if not isinstance(rawDay, str) else datetime.datetime.strptime(rawDay, '%Y-%m-%d')
         print('Start ' + self._getTitle(day))
-        self._validateInput(mailboxes, day)
         self._execBackup(mailboxes, day)
-        print('End ' + self._getTitle(day))        
+        print('End ' + self._getTitle(day))    
 
     def _getTitle(self, day):
         return 'backup base'
@@ -26,7 +27,7 @@ class base:
         if not day:
             raise Exception('Non hai passato un giorno valido da backuppare')
         if isinstance(day, str):
-            datetime.date.fromisoformat(day)
+            datetime.datetime.strptime(day, '%Y-%m-%d')
     
     def _execBackup(self, mailboxes, day):
         period = self._getDateStartEndPeriod(day)

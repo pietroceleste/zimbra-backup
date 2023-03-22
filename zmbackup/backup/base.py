@@ -12,11 +12,11 @@ class base:
         self.config = config        
     
     def exec(self, mailboxes, day):
-        print('Start ' +self._getTitle(day))
+        print('Start ' + self._getTitle(day))
         self._validateInput(mailboxes, day)
         self._execBackup(mailboxes, day)
-        print('End ' +self._getTitle(day))
-    
+        print('End ' + self._getTitle(day))        
+
     def _getTitle(self, day):
         return 'backup base'
 
@@ -25,6 +25,8 @@ class base:
             raise Exception('Non ci sono caselle di posta da allineare')
         if not day:
             raise Exception('Non hai passato un giorno valido da backuppare')
+        if isinstance(day, str):
+            datetime.date.fromisoformat(day)
     
     def _execBackup(self, mailboxes, day):
         period = self._getDateStartEndPeriod(day)

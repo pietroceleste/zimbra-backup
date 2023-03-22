@@ -9,11 +9,16 @@ class restore:
         self.config = config
 
     def exec(self, dirName):
+        self.validateTargetDirectory(dirName)
         print('Ripristino %s' % (dirName))
         dirPath = os.path.join(self.config[zmbackup.constant.BACKUP_ROOTDIR_KEY], dirName)
         files = listdir(dirPath)
         for filename in files:
             self.upload(os.path.join(dirPath, filename))
+
+    def validateTargetDirectory(self,dirName):
+        if (not os.path.exists(dirName)):
+            raise Exception('La directory %s non esiste. Impossibile procedere con il ripristino' % (dirName))
 
     def upload(self, fileName):
         mailboxId = self._extractMailboxIdFromFilename(fileName)

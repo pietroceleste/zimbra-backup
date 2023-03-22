@@ -6,3 +6,4 @@ from zmbackup.backup.daily import daily as Daily
 from zmbackup.backup.montly import montly as Montly
 from zmbackup.backup.yearly import yearly as Yearly
 from zmbackup.restore.restore import restore
+from zmbackup.args.manager import manager as argv_manager

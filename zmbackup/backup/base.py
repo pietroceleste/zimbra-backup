@@ -14,9 +14,9 @@ class base:
     def exec(self, mailboxes, rawDay):
         self._validateInput(mailboxes, rawDay)
         day = rawDay if not isinstance(rawDay, str) else datetime.datetime.strptime(rawDay, '%Y-%m-%d')
-        print('Start ' + self._getTitle(day))
+        print(self._getTitle(day).capitalize() + ' ... ', end='')
         self._execBackup(mailboxes, day)
-        print('End ' + self._getTitle(day))    
+        print('ESEGUITO!')
 
     def _getTitle(self, day):
         return 'backup base'

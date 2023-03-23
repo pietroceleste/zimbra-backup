@@ -34,9 +34,8 @@ class restore:
         fileName = os.path.basename(filePath)
         return fileName.replace('.tgz','')
 
-    def _urlFactory(self, mailboxId):
-        return "https://%s:7071/home/%s/?fmt=tgz&resolve=skip" % (self.getDestinationHost(), 'test@qandas.it')
-        #return "https://%s:7071/home/%s/?fmt=tgz&resolve=skip" % (self.getDestinationHost(), mailboxId)
+    def _urlFactory(self, mailboxId):        
+        return "https://%s:7071/home/%s/?fmt=tgz&resolve=skip" % (self.getDestinationHost(), mailboxId)
     
     def _execUpload(self, url, fileName):
         headers = {'Content-Type': 'application/x-www-form-urlencoded',}        

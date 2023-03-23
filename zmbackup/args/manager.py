@@ -13,8 +13,9 @@ class manager:
     def addShort(self, label, action = None):        
             self.shortOptions[label] = action
     
-    def addLong(self, label, action = None, postfix = "="):        
-            self.longOptions[label.replace('--','') + postfix] = action
+    def addLong(self, label, action = None, requireParameter=True): 
+        postfix = '=' if requireParameter else ''        
+        self.longOptions[label.replace('--','') + postfix] = action
 
     def validateRequiredParameters(self, requiredOptions):
         for requiredOption in requiredOptions:
@@ -47,10 +48,14 @@ class manager:
         sys.exit(2)
     
     def execute(self):
-        cmdExec = False        
+        cmdExec = False
+        longOptions = self.longOptions.keys()
         for rawOption, arg in self.getOptions():
-            option = rawOption.replace('--','') + '='
-            if option in self.longOptions.keys():
-                self.longOptions[option](arg)
-                cmdExec= True
+            curOption = rawOption.replace('--','') + '='            
+            if (curOption in longOptions):
+                self.longOptions[curOption](arg)
+                cmdExec = True
+            if (curOption.replace('=','') in longOptions):
+                self.longOptions[curOption.replace('=','')]()
+                cmdExec = True
         return cmdExec

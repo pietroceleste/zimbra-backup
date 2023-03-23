@@ -20,12 +20,13 @@ class align:
             raise Exception('Non ci sono caselle di posta da allineare')
         if not fromDate:
             raise Exception('Non hai fornito una data di partenza per l\'allineamento')
+        if isinstance(fromDate, str):
+            datetime.strptime(fromDate, '%Y-%m-%d')
 
     def _execBackup(self, mailboxes, fromDate):
-        cur_date = fromDate
+        cur_date = datetime.strptime(fromDate, '%Y-%m-%d')
         end_date = datetime.today()        
-        delta = timedelta(days=1)
-        dates = []
+        delta = timedelta(days=1)        
         while cur_date <= end_date:                                    
             self.backupper.exec(mailboxes, cur_date)            
             self.restorer.exec('%s-%02d-%02d' % (cur_date.year, cur_date.month, cur_date.day))

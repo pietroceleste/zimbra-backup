@@ -16,14 +16,14 @@ class main:
     def __init__(self):
         self.__init_root_dir__()
         self.__init_zimbra_fs__()
-        #try:
-        self.__init_argv_manager__()
-        self.__init_configuration__()                       
-        self.__init_mailboxes_list__()        
-        if (not self.argv_manager.execute()):
-            self.alignDailyDirectoriesAction(datetime.today())
-        #except Exception as ex:
-        #    print(ex)
+        try:
+            self.__init_argv_manager__()
+            self.__init_configuration__()                       
+            self.__init_mailboxes_list__()        
+            if (not self.argv_manager.execute()):
+                self.alignDailyDirectoriesAction(datetime.today())
+        except Exception as ex:
+            print(ex)
 
     def __init_root_dir__(self):
         self.rootdir = os.path.dirname(__file__)

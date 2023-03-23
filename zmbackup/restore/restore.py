@@ -11,10 +11,14 @@ class restore:
     def exec(self, dirName):
         dirPath = os.path.join(self.config[zmbackup.constant.BACKUP_ROOTDIR_KEY], dirName)
         self.validateTargetDirectory(dirPath)
-        print('Ripristino %s' % (dirName))        
+        print('Sto riprstinando la directory %s' % (dirName)) 
         files = listdir(dirPath)
         for filename in files:
-            self.upload(os.path.join(dirPath, filename))
+            filePath = os.path.join(dirPath, filename)
+            fileSize = os.stat(filePath).st_size
+            if (fileSize == 0):
+                continue
+            self.upload(filePath)
 
     def validateTargetDirectory(self,dirName):
         if (not os.path.exists(dirName)):

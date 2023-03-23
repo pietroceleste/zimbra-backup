@@ -53,7 +53,7 @@ class main:
         margv.addLong('--restore', self.restoreAction)
         margv.addLong('--align', self.alignDailyDirectoriesAction)
         margv.addLong('--align-yesterday', self.alignYesteradyAction, False)
-        margv.addLong('--realign', self.alignDailyDirectoriesAction)
+        margv.addLong('--realign', self.realignDailyDirectoriesAction, False)
         margv.addLong('--backup-dayly', self.dailyBackupAction)
         margv.addLong('--backup-yesterday', self.yesterdayBackupAction, False)
         margv.addLong('--backup-montly', self.montlyBackupAction)
@@ -76,6 +76,10 @@ class main:
     def alignYesteradyAction(self):        
         day = datetime.today() - timedelta(days=1)        
         self.alignDailyDirectoriesAction(day.strftime('%Y-%m-%d'))
+
+    def realignDailyDirectoriesAction(self):
+        zbk = zmbackup.DailyReAlign(self.config)
+        zbk.exec(self.mailboxes)
 
     def dailyBackupAction(self, date):
         zbk = zmbackup.Daily(self.config)

@@ -12,6 +12,7 @@ class main:
     rootdir = None
     zfs = None 
     argv_manager = None
+    filelog = None
 
     def __init__(self):
         self.__init_root_dir__()
@@ -63,7 +64,7 @@ class main:
         margv.addLong('--debug')
         margv.setHelpMessage('zmbackup.py [--backup-yearly=yyyy-mm-dd] [--backup-last-year] [--backup-montly=yyyy-mm-dd] [--backup-last-month] [--backup-daily=yyyy-mm-dd] [--restore=subfolder]')
         margv.init(sys.argv[1:])
-        self.argv_manager = margv            
+        self.argv_manager = margv
 
     def restoreAction(self, subFolder):
         rst = zmbackup.restore(self.config)
@@ -72,7 +73,7 @@ class main:
     def alignDailyDirectoriesAction(self, date):        
         zbk = zmbackup.DailyAlign(self.config)
         zbk.exec(self.mailboxes, date)
-    
+
     def alignYesteradyAction(self):        
         day = datetime.today() - timedelta(days=1)        
         self.alignDailyDirectoriesAction(day.strftime('%Y-%m-%d'))
@@ -84,7 +85,7 @@ class main:
     def dailyBackupAction(self, date):
         zbk = zmbackup.Daily(self.config)
         zbk.exec(self.mailboxes, date)
-    
+
     def yesterdayBackupAction(self):
         day = datetime.today() - timedelta(days=1)        
         self.dailyBackupAction(day.strftime('%Y-%m-%d'))
@@ -92,18 +93,18 @@ class main:
     def montlyBackupAction(self, date):        
         zbk = zmbackup.Montly(self.config)
         zbk.exec(self.mailboxes, date)
-    
+
     def lastMonthBackupAction(self):
         day = datetime.today() - relativedelta(months=1)
         self.montlyBackupAction(day.strftime('%Y-%m-%d'))
-    
+
     def yearlyBackupAction(self, date):
         zbk = zmbackup.Yearly(self.config)
         zbk.exec(self.mailboxes, date)
-    
+
     def lastYearBackupAction(self):
         day = datetime.today() - relativedelta(years=1)        
-        self.yearlyBackupAction(day.strftime('%Y-%m-%d'))
-    
+        self.yearlyBackupAction(day.strftime('%Y-%m-%d'))    
+
 if (__name__ == "__main__"):
-    main() #.alignDailyDirectoriesAction()
+    main() 

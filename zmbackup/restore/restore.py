@@ -1,4 +1,4 @@
-import requests, os
+import requests, os, datetime
 from os import listdir
 import zmbackup.constant
 
@@ -12,23 +12,29 @@ class restore:
         dirPath = os.path.join(self.config[zmbackup.constant.BACKUP_ROOTDIR_KEY], dirName)
         self.validateTargetDirectory(dirPath)
         print('Sto riprstinando la directory %s' % (dirName)) 
+        self.writeLog('Start restore directory %s' % (dirName))
         files = listdir(dirPath)
         for filename in files:
             filePath = os.path.join(dirPath, filename)
             fileSize = os.stat(filePath).st_size
             if (fileSize == 0):
-                continue
+                continue            
             self.upload(filePath)
+        self.writeLog('End restore directory %s' % (dirName))
 
     def validateTargetDirectory(self,dirName):
         if (not os.path.exists(dirName)):
             raise Exception('La directory %s non esiste. Impossibile procedere con il ripristino del backup' % (dirName))
 
-    def upload(self, fileName):
+    def upload(self, fileName):        
         mailboxId = self._extractMailboxIdFromFilename(fileName)
+        self.writeLog("Provo a ripristinare la casella %s" % (mailboxId))
         url = self._urlFactory(mailboxId)
         rsp = self._execUpload(url, fileName)
-        print(rsp)
+        if (rsp.ok == True):
+            self.writeLog("Ripristino casella %s completato" % (mailboxId))
+        else:
+            self.writeLog(rsp.text)
     
     def _extractMailboxIdFromFilename(self, filePath):
         fileName = os.path.basename(filePath)
@@ -48,3 +54,13 @@ class restore:
     
     def getDestinationAdmin(self):
         return tuple(self.config['destination']['admin-account'])
+    
+    def getBackupRootDirectory(self):
+        return self.config[zmbackup.constant.BACKUP_ROOTDIR_KEY]
+
+    def writeLog(self, message, newLine = "\n"):
+        logmessage = "%s - %s" % (datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), message)
+        print(logmessage)
+        file = open(self.getBackupRootDirectory() + "/zmbackup.log", 'a')
+        file.write(logmessage)
+        file.close()

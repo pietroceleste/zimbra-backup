@@ -11,20 +11,23 @@ class base:
     def __init__(self, config) -> None:
         self.config = config        
     
-    def exec(self, mailboxes, rawDay):
+    def exec(self, mailboxes, rawDay):        
         self._validateInput(mailboxes, rawDay)
         day = rawDay if not isinstance(rawDay, str) else datetime.datetime.strptime(rawDay, '%Y-%m-%d')
+        self.writeLog(self._getTitle(day) + ' start')
         print(self._getTitle(day).capitalize() + ' ... ', end='')
         self._execBackup(mailboxes, day)
-        print('ESEGUITO!')
+        self.writeLog(self._getTitle(day) + ' end')
 
     def _getTitle(self, day):
         return 'backup base'
 
     def _validateInput(self, mailboxesToBackup, day):
         if not mailboxesToBackup:
+            self.writeLog('Non ci sono caselle di posta da allineare')
             raise Exception('Non ci sono caselle di posta da allineare')
         if not day:
+            self.writeLog('Non hai passato un giorno valido da backuppare')
             raise Exception('Non hai passato un giorno valido da backuppare')
         if isinstance(day, str):
             datetime.datetime.strptime(day, '%Y-%m-%d')
@@ -34,7 +37,8 @@ class base:
         subDir = self._subDirNameFactory(day)
         hostOrigin = self.getOriginHost()
         adminAccount = self.getOriginAdminAccount()
-        for mailboxId in mailboxes:            
+        for mailboxId in mailboxes:
+            self.writeLog('Inizio backup casella %s' % (mailboxId))
             url = self._zimbraApiPeriodUrlFactory(hostOrigin, mailboxId, period)
             localFilename = self.backupFilenameFactory(subDir, mailboxId)
             backupDownload().exec(url, adminAccount, localFilename)
@@ -62,7 +66,7 @@ class base:
 
     def backupFilenameFactory(self, subDirectory, fileName):
         return os.path.join(self.getBackupRootDirectory(), subDirectory, "%s.tgz" % (fileName))
-    
+
     def getOriginHost(self):
         return self.config[zmbackup.constant.ORIGIN]['host']
     
@@ -71,3 +75,10 @@ class base:
     
     def getBackupRootDirectory(self):
         return self.config[zmbackup.constant.BACKUP_ROOTDIR_KEY]
+
+    def writeLog(self, message):
+        logmessage = "%s - %s\n" % (datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), message)
+        print(logmessage)
+        file = open(self.getBackupRootDirectory() + "/zmbackup.log", 'a')
+        file.write(logmessage)
+        file.close()

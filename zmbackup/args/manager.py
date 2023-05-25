@@ -42,6 +42,10 @@ class manager:
     
     def setHelpMessage(self, helpMessage, helpShortOption = "h", helpLongOption = "--help"):
         self.helpMessage = helpMessage
+        if (helpShortOption):
+            self.addShort(helpShortOption, self.printHelp)
+        if (helpLongOption):
+            self.addLong(helpLongOption, self.printHelp, False)
         
     def printHelp(self):        
         print(self.helpMessage)
